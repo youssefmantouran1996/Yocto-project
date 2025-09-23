@@ -1,14 +1,35 @@
 #!/bin/bash
 
 # techleef.yml gitignore docker > docker.sh > do_kas_shell
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 checkout|shell|build <path/to/yml>"
+    exit 1 
+fi
 
-VENV_DIR="../yocto-venv"
+PROJECT_DIR="$(realpath $(dirname "$0")/..)"
+
+VENV_DIR="${PROJECT_DIR}/yocto-venv"
+
+# Install dependencies for Yocto Scarthgap 
+RUN apt-get update && \
+    apt-get install -y \
+    sudo build-essential chrpath cpio debianutils diffstat file gawk gcc git \
+    iputils-ping libacl1 liblz4-tool locales python3 python3-git python3-jinja2 \
+    python3-pexpect python3-pip python3-subunit socat texinfo unzip wget \
+    xz-utils zstd libncurses5-dev libtinfo-dev\
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure locale
+RUN locale-gen en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 do_prepare_env(){
     if [ -d "$VENV_DIR" ]; then
         # Make sure that is actually a python virtual environment
         # If it is not, then fail with an error message
-        if [ ! -f "$VENV_DIR/bin/activate" ]; then
+        if [ ! -f "$VENV_DIR/pyvenv.cfg" ]; then
             echo "[X] $VENV_DIR exists but is not a valid Python virtual environment"
             exit 1
         fi
