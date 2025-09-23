@@ -7,5 +7,6 @@ header:
     - kas/include/techleef.yml
 
 machine: raspberrypi5
-distro: nodistro
+distro: techleef
 target: core-image-minimal
+
