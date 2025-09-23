@@ -1,0 +1,6 @@
+# Techleef Raspberry Pi 5 configuration
+arm_64bit=1
+enable_gic=1
+armstub=armstub8-gic.bin
+kernel=Image
+dtb=bcm2712-rpi-5-b.dtb
