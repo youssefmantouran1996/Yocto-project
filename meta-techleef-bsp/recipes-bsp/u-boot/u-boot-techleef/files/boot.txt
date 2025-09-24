@@ -1,4 +1,0 @@
-# Techleef boot script for Raspberry Pi 5
-fatload mmc 0:1 ${fdt_addr_r} bcm2712-rpi-5-b.dtb
-fatload mmc 0:1 ${kernel_addr_r} Image
-booti ${kernel_addr_r} - ${fdt_addr_r}
